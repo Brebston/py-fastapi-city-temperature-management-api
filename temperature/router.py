@@ -9,7 +9,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from depenencies import get_db
+from dependencies import get_db
 
 from city.models import City
 from city import crud as city_crud
