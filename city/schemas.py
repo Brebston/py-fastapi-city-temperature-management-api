@@ -1,23 +1,31 @@
-from pydantic import BaseModel, ConfigDict
+import datetime
+from pydantic import BaseModel
 
 
 class CityBase(BaseModel):
     name: str
-    additional_info: str | None = None
-
-
-class City(CityBase):
-    id: int
-    model_config = ConfigDict(from_attributes=True)
 
 
 class CityCreate(CityBase):
     pass
 
 
-class CityDelete(CityBase):
-    pass
+class CityUpdate(BaseModel):
+    name: str | None = None
 
 
-class CityUpdate(CityBase):
-    pass
+class City(CityBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+        orm_mode = True
+
+
+class CityDelete(BaseModel):
+    id: int
+    deleted: bool = True
+
+    class Config:
+        from_attributes = True
+        orm_mode = True

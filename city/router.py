@@ -30,7 +30,11 @@ def read_city(city_id: int, db: Session = Depends(get_db)):
 
 @router.put("/cities/{city_id}", response_model=schemas.City)
 def update_city(city_id: int, city: schemas.CityUpdate, db: Session = Depends(get_db)):
-    return crud.update_city(db, city_id, city)
+    exiting_city = crud.get_city_by_id(db, city_id)
+    if exiting_city is None:
+        raise HTTPException(status_code=404, detail="City not found")
+
+    return crud.update_city(db, city_id=city_id, city=city)
 
 
 @router.delete("/cities/{city_id}", response_model=schemas.CityDelete)
@@ -40,3 +44,4 @@ def delete_city(city_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="City not found")
 
     crud.delete_city(db, city_id)
+    return schemas.CityDelete(id=city_id, deleted=True)

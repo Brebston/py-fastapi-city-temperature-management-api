@@ -17,9 +17,10 @@ def create_city(db: Session, city: schemas.CityCreate):
 def get_cities(
     db: Session, skip: int = 0, limit: int = 100, additional_info: str = None
 ):
-    queryset = select(models.City).offset(skip).limit(limit)
+    queryset = select(models.City)
     if additional_info is not None:
         queryset = queryset.where(models.City.additional_info == additional_info)
+
     queryset = queryset.offset(skip).limit(limit)
     return db.scalars(queryset).all()
 
